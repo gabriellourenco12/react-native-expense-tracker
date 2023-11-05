@@ -10,6 +10,7 @@ import AllExpenses from "./screens/AllExpenses";
 import RecentExpanses from "./screens/RecentExpenses";
 import {GlobalStyles} from "./constants/styles";
 import IconButton from "./components/UI/IconButton";
+import ExpensesContextProvider from "./store/expenses-context";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -40,7 +41,7 @@ function BottomTabNavigator() {
                     tabBarIcon: ({color, size}) => (
                         <Ionicons name="hourglass" color={color} size={size}/>
                     ),
-            }}
+                }}
             />
             <BottomTab.Screen
                 name={"AllExpenses"}
@@ -60,29 +61,31 @@ function BottomTabNavigator() {
 export default function App() {
     return (
         <>
-            <StatusBar style={"auto"}/>
-            <NavigationContainer children={null}>
-                <Stack.Navigator
-                    initialRouteName={"Home"}
-                    screenOptions={{
-                        headerStyle: {backgroundColor: GlobalStyles.colors.primary500},
-                        headerTintColor: 'white',
-                    }}
-                >
-                    <Stack.Screen
-                        name={"Home"}
-                        component={BottomTabNavigator}
-                        options={{headerShown: false}}
-                    />
-                    <Stack.Screen
-                        name={"ManageExpense"}
-                        component={ManageExpanse}
-                        options={{
-                            presentation: 'modal',
+            <StatusBar style={"light"}/>
+            <ExpensesContextProvider>
+                <NavigationContainer children={null}>
+                    <Stack.Navigator
+                        initialRouteName={"Home"}
+                        screenOptions={{
+                            headerStyle: {backgroundColor: GlobalStyles.colors.primary500},
+                            headerTintColor: 'white',
                         }}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
+                    >
+                        <Stack.Screen
+                            name={"Home"}
+                            component={BottomTabNavigator}
+                            options={{headerShown: false}}
+                        />
+                        <Stack.Screen
+                            name={"ManageExpense"}
+                            component={ManageExpanse}
+                            options={{
+                                presentation: 'modal',
+                            }}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </ExpensesContextProvider>
         </>
     );
 }

@@ -115,8 +115,15 @@ function ExpensesContextProvider({children}) {
         dispatch({type: 'DELETE', payload: id});
     }
 
+    const value = {
+        expenses: expensesState,
+        addExpense: addExpense,
+        updateExpense: updateExpense,
+        deleteExpense: deleteExpense,
+    }
+
     return (
-        <ExpensesContext.Provider value={null}>
+        <ExpensesContext.Provider value={value}>
             {children}
         </ExpensesContext.Provider>
     )
