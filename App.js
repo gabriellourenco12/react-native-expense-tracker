@@ -9,18 +9,28 @@ import ManageExpanse from "./screens/ManageExpense";
 import AllExpenses from "./screens/AllExpenses";
 import RecentExpanses from "./screens/RecentExpenses";
 import {GlobalStyles} from "./constants/styles";
+import IconButton from "./components/UI/IconButton";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
     return (
-        <BottomTab.Navigator screenOptions={{
+        <BottomTab.Navigator screenOptions={({navigation}) => ({
             headerStyle: {backgroundColor: GlobalStyles.colors.primary500},
             headerTintColor: 'white',
             tabBarStyle: {backgroundColor: GlobalStyles.colors.primary500},
             tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        }}>
+            headerRight: ({tintColor}) => (
+                <IconButton
+                    icon={'add'}
+                    size={24}
+                    color={tintColor}
+                    onPress={() => {
+                        navigation.navigate('ManageExpense');
+                    }}/>
+            )
+        })}>
             <BottomTab.Screen
                 name={"RecentExpenses"}
                 component={RecentExpanses}
@@ -52,13 +62,25 @@ export default function App() {
         <>
             <StatusBar style={"auto"}/>
             <NavigationContainer children={null}>
-                <Stack.Navigator initialRouteName={"Home"} >
+                <Stack.Navigator
+                    initialRouteName={"Home"}
+                    screenOptions={{
+                        headerStyle: {backgroundColor: GlobalStyles.colors.primary500},
+                        headerTintColor: 'white',
+                    }}
+                >
                     <Stack.Screen
                         name={"Home"}
                         component={BottomTabNavigator}
                         options={{headerShown: false}}
                     />
-                    <Stack.Screen name={"ManageExpense"} component={ManageExpanse}/>
+                    <Stack.Screen
+                        name={"ManageExpense"}
+                        component={ManageExpanse}
+                        options={{
+                            presentation: 'modal',
+                        }}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
         </>
